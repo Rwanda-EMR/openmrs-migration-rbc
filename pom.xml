@@ -1,44 +1,75 @@
 <project>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.rbc</groupId>
-  <artifactId>openmrs-migration-rbc</artifactId>
-  <name>OpenMRS migration - RBC</name>
-  <description>OpenMRS database migration code to be executed against RBC databases</description>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.rbc</groupId>
+	<artifactId>openmrs-migration-rbc</artifactId>
+	<name>OpenMRS migration - RBC</name>
+	<description>OpenMRS database migration code to be executed against RBC databases</description>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
 
-  <developers>
-    <developer>
-      <name>Rwanda Biomedical Centre</name>
-    </developer>
-  </developers>
-  <organization>
-    <name>Rwanda Biomedical Centre</name>
-    <url>https://www.rbc.gov.rw</url>
-  </organization>
+	<developers>
+		<developer>
+			<name>Rwanda Biomedical Centre</name>
+		</developer>
+	</developers>
+	<organization>
+		<name>Rwanda Biomedical Centre</name>
+		<url>https://www.rbc.gov.rw</url>
+	</organization>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>create-distribution</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-            <configuration>
-              <appendAssemblyId>false</appendAssemblyId>
-              <descriptors>
-                <descriptor>src/main/assembly/assembly.xml</descriptor>
-              </descriptors>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+	<properties>
+		<db_host>localhost</db_host>
+		<db_port>3306</db_port>
+		<db_name>openmrs</db_name>
+		<db_user>openmrs</db_user>
+		<db_password>openmrs</db_password>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.8</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<version>3.8.8</version>
+				<configuration>
+					<changeLogFile>src/main/resources/migrations.xml</changeLogFile>
+					<driver>com.mysql.jdbc.Driver</driver>
+					<url>jdbc:mysql://${db_host}:${db_port}/${db_name}?autoReconnect=true&amp;sessionVariables=default_storage_engine%3DInnoDB&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull</url>
+					<username>${db_user}</username>
+					<password>${db_password}</password>
+					<databaseChangeLogTableName>liquibasechangelog</databaseChangeLogTableName>
+					<databaseChangeLogLockTableName>liquibasechangeloglock</databaseChangeLogLockTableName>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>create-distribution</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<appendAssemblyId>false</appendAssemblyId>
+							<descriptors>
+								<descriptor>src/main/assembly/assembly.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
