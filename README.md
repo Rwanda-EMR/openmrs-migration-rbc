@@ -1,4 +1,4 @@
-![alt tag](images/rbc-logo.png) ![alt tag](images/icap-logo.png) ![alt tag](images/pih-logo.png)
+![alt tag](images/rbc-icap-pih.png)
 
 -----
 
