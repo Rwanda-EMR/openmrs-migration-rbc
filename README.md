@@ -1,4 +1,4 @@
-![alt tag](readme/rbc-logo.png)
+![alt tag](images/rbc-logo.png)
 
 -----
 
